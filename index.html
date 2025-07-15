@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Pro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for animations */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-custom {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        /* New: Background animation */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-size: 400% 400%; /* Larger background for animation */
+            animation: gradient-animation 15s ease infinite; /* Slow, continuous animation */
+        }
+
+        /* Custom gradient for the button for a more "aura" effect */
+        .btn-gradient {
+            background-image: linear-gradient(to right top, #1e3a8a, #3b82f6, #1e3a8a); /* Dark blue to medium blue */
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.4); /* Deeper shadow based on new color */
+        }
+        .btn-gradient:hover {
+            background-image: linear-gradient(to right top, #3b82f6, #1e3a8a, #1e3a8a);
+            box-shadow: 0 15px 30px rgba(30, 58, 138, 0.6);
+        }
+        .btn-gradient:active {
+            background-image: linear-gradient(to right top, #1e3a8a, #1e3a8a, #3b82f6, #3b82f6);
+            transform: translateY(0);
+            box-shadow: 0 5px 10px rgba(30, 58, 138, 0.3);
+        }
+        /* Download button specific gradient */
+        .download-btn-gradient {
+            background-image: linear-gradient(to right, #d1d5db, #e5e7eb, #d1d5db); /* Light gray/silver for contrast */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .download-btn-gradient:hover {
+            background-image: linear-gradient(to right, #e5e7eb, #d1d5db, #e5e7eb);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Input focus glow */
+        .input-glow:focus {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); /* Medium blue with opacity */
+            border-color: #3b82f6; /* Medium blue */
+        }
+
+        /* Image container glow on load */
+        @keyframes image-glow {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            100% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+        }
+        .image-loaded-glow {
+            animation: image-glow 1s ease-out forwards;
+        }
+
+        /* Common styles for buttons in editor */
+        .btn-primary-editor {
+            background-image: linear-gradient(to right, #1e3a8a, #3b82f6, #1e3a8a); /* Dark blue to medium blue */
+            background-size: 200% 100%; /* Make gradient larger than button */
+            animation: gradient-move 4s linear infinite; /* Apply moving gradient */
+            transition: all 0.3s ease-out;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+        }
+        .btn-primary-editor:hover {
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); /* Even deeper shadow */
+        }
+        .btn-primary-editor:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary-editor.disabled {
+            background-image: none;
+            background-color: #9ca3af; /* gray-400 */
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            animation: none; /* Stop animation when disabled */
+        }
+
+        .btn-secondary-editor {
+            background-image: linear-gradient(to right, #d4af37, #b8860b, #d4af37); /* Gold/Bronze accent */
+            background-size: 200% 100%; /* Make gradient larger than button */
+            animation: gradient-move 4s linear infinite; /* Apply moving gradient */
+            transition: all 0.3s ease-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-secondary-editor:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .btn-secondary-editor:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Added/Updated transitions for other elements */
+        .input-field-transition {
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .container-transition {
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        .error-container-transition {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Custom file upload button styling */
+        .custom-file-upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.75rem; /* rounded-xl */
+            cursor: pointer;
+            font-weight: 600; /* font-semibold */
+            color: #ffffff;
+            background-image: linear-gradient(to right, #1e3a8a, #3b82f6, #1e3a8a); /* dark blue */
+            background-size: 200% 100%; /* Make gradient larger than button */
+            animation: gradient-move 4s linear infinite; /* Apply moving gradient */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-out;
+        }
+        .custom-file-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        .custom-file-upload:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .custom-file-upload-text {
+            margin-left: 0.5rem;
+            color: #4b5563; /* gray-600 */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* medium */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: calc(100% - 120px); /* Adjust based on button width */
+            transition: color 0.3s ease-in-out;
+        }
+
+        /* Apply pulsating shadow to main card and image containers */
+        .card-with-animated-shadow {
+            animation: pulse-shadow-royal 3s infinite alternate; /* Apply animation */
+            box-shadow: 0 0 15px rgba(30, 58, 138, 0.4); /* Dark blue shadow */
+        }
+        @keyframes pulse-shadow-royal {
+            0% { box-shadow: 0 0 15px rgba(30, 58, 138, 0.4); } /* Dark blue */
+            50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); } /* Gold */
+            100% { box-shadow: 0 0 15px rgba(30, 58, 138, 0.4); }
+        }
+        .image-container-with-animated-shadow {
+            animation: pulse-shadow-royal 3s infinite alternate; /* Apply animation */
+        }
+
+        /* Styles for the new fixed header/menu */
+        #fixedHeader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15, 23, 42, 0.8); /* Slate-900 with transparency */
+            backdrop-filter: blur(8px);
+            z-index: 1000; /* Ensure it's on top of other content */
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* To push menu toggle to the right */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        #navMenu {
+            position: fixed;
+            top: 64px; /* Adjust based on header height */
+            left: 0;
+            width: 200px; /* Width of the dropdown menu */
+            background-color: rgba(15, 23, 42, 0.9); /* Slate-900 with more transparency */
+            backdrop-filter: blur(10px);
+            border-radius: 0 0.75rem 0.75rem 0; /* Rounded bottom-right corner */
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+            padding: 0.5rem 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            transform-origin: top left; /* Change origin for animation */
+            transform: translateX(-100%); /* Start off-screen to the left */
+            opacity: 0;
+            z-index: 999; /* Below header, above content */
+        }
+        #navMenu.show-menu {
+            transform: translateX(0); /* Slide in */
+            opacity: 1;
+        }
+        #navMenu button {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #d1d5db; /* gray-300 */
+            width: 100%;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        #navMenu button:hover {
+            background-color: #1e3a8a; /* Dark blue */
+            color: #ffffff;
+        }
+        #navMenu button.active {
+            background-color: #3b82f6; /* Medium blue */
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-950 flex flex-col items-center justify-center p-4 font-sans overflow-y-auto">
+
+    <!-- Fixed Header with Hamburger Icon and Title -->
+    <div id="fixedHeader">
+        <div class="flex items-center space-x-3">
+            <button id="menuToggleBtn" class="p-2 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+            <span class="text-3xl font-extrabold text-white">Image Pro</span>
+        </div>
+    </div>
+
+    <!-- Navigation Menu (Dropdown) -->
+    <div id="navMenu" class="hidden">
+        <button id="showHomeBtn" class="active">Home</button>
+        <button id="showGeneratorBtn">Image Generator</button>
+        <button id="showEditorBtn">Image Editor</button>
+        <button id="showGalleryBtn">Gallery</button> <!-- New Gallery Button -->
+    </div>
+
+    <!-- Main Content Sections (Adjusted padding-top to account for fixed header) -->
+    <div class="pt-20 w-full flex flex-col items-center"> <!-- Added pt-20 to push content down -->
+
+        <!-- Home Section - Updated Layout without Carousel -->
+        <div id="homeSection" class="w-full max-w-4xl text-center mx-auto my-8 transform transition-all duration-700 flex flex-col justify-center min-h-[calc(100vh-80px)]">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
+                    Welcome to Image Pro!
+                </span>
+            </h1>
+
+            <p class="text-slate-200 text-xl md:text-2xl max-w-2xl mx-auto mb-10">
+                Unleash your creativity with AI-powered image generation and editing.
+            </p>
+
+            <!-- Image Generator Description and Button -->
+            <div class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl mx-auto my-8 border border-blue-700 border-opacity-30">
+                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Generator</h2>
+                <p class="text-slate-300 mb-6 text-lg text-left">
+                    The Image Generator leverages cutting-edge generative AI models to transform textual prompts into rich visual masterpieces. Users interact with a streamlined interface featuring a spacious, responsive text area for detailed prompt input, supporting complex descriptions for highly nuanced outputs. The "Generate Image" button initiates a real-time rendering process, providing immediate visual feedback. The design prioritizes minimal cognitive load, ensuring that even intricate image generation is accessible and efficient, with options to download in various high-quality formats (PNG, JPEG, WebP) for optimal versatility. Error handling is robust, guiding users with clear, actionable messages.
+                </p>
+                <button onclick="showSection('generator')" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                    Try Image Generator
+                </button>
+            </div>
+
+            <!-- Image Editor Description and Button -->
+            <div class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl mx-auto my-8 border border-blue-700 border-opacity-30">
+                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Editor</h2>
+                <p class="text-slate-300 mb-6 text-lg text-left">
+                    The Image Editor empowers users with AI-driven image manipulation. Its intuitive file upload mechanism, featuring a custom button and a clear preview area, ensures a smooth onboarding experience for any image. Users can articulate complex editing instructions via a dedicated text input, allowing for precise control over transformations such as style transfer, object manipulation, or background alterations. The "AI Enhance Image" button triggers sophisticated image-to-image translation models. The responsive design ensures consistent usability across devices, and the ability to download edited images in multiple formats caters to diverse professional and creative needs, all while maintaining visual fidelity.
+                </p>
+                <button onclick="showSection('editor')" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                    Try Image Editor
+                </button>
+            </div>
+
+            <!-- New: Open My Gallery Button -->
+            <div class="mt-8">
+                <button onclick="showSection('gallery')" class="px-8 py-4 rounded-xl bg-purple-600 text-white font-semibold text-lg hover:bg-purple-700 transition-colors duration-200 shadow-lg">
+                    Open My Gallery
+                </button>
+            </div>
+        </div>
+
+        <!-- Image Generator Section - Smaller Card -->
+        <div id="generatorSection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-xl md:max-w-2xl lg:max-w-3xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
+                    Image Generator
+                </span>
+            </h1>
+
+            <p class="text-slate-300 mb-8 text-lg md:text-xl">
+                Unleash your imagination and generate stunning visuals with the power of AI.
+            </p>
+
+            <div class="mb-8">
+                <textarea
+                    id="generatorPromptInput"
+                    class="w-full p-5 border border-blue-500 border-opacity-50 rounded-xl outline-none transition-all duration-400 text-slate-200 placeholder-slate-400 resize-none shadow-inner-lg bg-slate-800 bg-opacity-90 input-glow"
+                    rows="6"
+                    placeholder="e.g., 'A majestic dragon soaring over a bioluminescent forest at twilight, intricate details, fantasy art, volumetric lighting, 8k.'"
+                ></textarea>
+            </div>
+
+            <button
+                id="generateImageButton"
+                class="w-full py-4 px-8 rounded-xl text-white font-extrabold text-xl shadow-lg transition-all duration-400 transform hover:-translate-y-1 hover:shadow-2xl btn-gradient"
+            >
+                <div id="generateButtonContent" class="flex items-center justify-center">
+                    <span>Generate Image</span>
+                </div>
+            </button>
+
+            <div id="generatorErrorContainer" class="mt-8 p-5 bg-red-800 bg-opacity-70 border border-red-600 text-red-100 rounded-lg text-lg shadow-xl hidden animate-fade-in-up">
+                <!-- Error messages will be displayed here -->
+            </div>
+
+            <div id="generatedImageResultContainer" class="mt-10 animate-fade-in-up hidden">
+                <h2 class="text-3xl font-bold text-slate-100 mb-6">Your Creation:</h2>
+                <div class="relative w-full h-auto rounded-xl shadow-aura-lg border-4 border-blue-500 flex items-center justify-center bg-slate-900 bg-opacity-50 p-3 overflow-hidden">
+                    <img
+                        id="generatedImage"
+                        src=""
+                        alt=""
+                        class="max-w-full h-auto object-contain rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+                    >
+                </div>
+                <!-- Download format selection for Generator -->
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <label for="generatorDownloadFormat" class="text-slate-300 font-semibold">Download as:</label>
+                    <select id="generatorDownloadFormat" class="p-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="image/png">PNG</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                    <button
+                        id="downloadGeneratedButton"
+                        class="py-3.5 px-8 rounded-xl text-gray-900 font-bold text-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 download-btn-gradient"
+                    >
+                        Download Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Editor Section - Smaller Card -->
+        <div id="editorSection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-xl md:max-w-2xl lg:max-w-3xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
+                    Image Editor
+                </span>
+            </h1>
+
+            <p class="text-slate-300 mb-8 text-lg md:text-xl">
+                Upload an image and use AI to transform it!
+            </p>
+
+            <div class="mb-8">
+                <label for="editorImageUpload" class="block text-left text-slate-300 text-base font-semibold mb-2">
+                    Upload Image:
+                </label>
+                <!-- Hidden native file input -->
+                <input
+                    type="file"
+                    id="editorImageUpload"
+                    accept="image/*"
+                    class="hidden"
+                >
+                <!-- Custom file upload button -->
+                <div class="flex items-center space-x-3">
+                    <div id="editorCustomFileUploadButton" class="custom-file-upload flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span>Choose File</span>
+                    </div>
+                    <span id="editorFileNameDisplay" class="custom-file-upload-text text-slate-400">No file chosen</span>
+                </div>
+
+                <div id="editorPreviewContainer" class="mt-6 flex justify-center items-center bg-slate-800 rounded-xl p-4 border-2 border-dashed border-blue-500 min-h-[200px] overflow-hidden shadow-lg container-transition image-container-with-animated-shadow">
+                    <img id="editorImagePreview" src="#" alt="" class="max-w-full max-h-56 object-contain rounded-lg shadow-md">
+                    <p id="editorImagePlaceholder" class="text-gray-400 text-lg">No image uploaded</p>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <label for="editorPromptInputText" class="block text-left text-slate-300 text-base font-semibold mb-2">
+                    Describe your desired edit:
+                </label>
+                <textarea
+                    id="editorPromptInputText"
+                    class="w-full p-4 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-700 outline-none transition-all duration-300 text-slate-200 placeholder-slate-400 resize-none shadow-sm hover:border-blue-500 input-field-transition bg-slate-800"
+                    rows="5"
+                    placeholder="e.g., 'Change the car color to red and add a futuristic cityscape in the background.'"
+                ></textarea>
+            </div>
+
+            <button
+                id="editorEditButton"
+                class="w-full py-4 px-6 rounded-xl text-white font-bold text-xl btn-primary-editor from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 active:from-blue-900 active:to-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+            >
+                <div id="editorButtonContent" class="flex items-center justify-center">
+                    <span>AI Enhance Image</span>
+                </div>
+            </button>
+
+            <div id="editorErrorContainer" class="mt-8 p-4 bg-red-800 bg-opacity-70 border border-red-600 text-red-100 rounded-lg text-base shadow-md hidden animate-fade-in-up">
+                <!-- Error messages will be displayed here -->
+            </div>
+
+            <div id="editorEditedImageResultContainer" class="mt-10 animate-fade-in-up hidden">
+                <h2 class="text-2xl font-bold text-slate-100 mb-5">Edited Image:</h2>
+                <div class="relative w-full h-auto rounded-xl shadow-xl border-2 border-blue-400 flex items-center justify-center bg-slate-800 p-4 min-h-[200px] overflow-hidden">
+                    <img
+                        id="editorEditedImage"
+                        src=""
+                        alt=""
+                        class="max-w-full h-auto object-contain rounded-lg shadow-md"
+                    >
+                </div>
+                <!-- Download format selection for Editor -->
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <label for="editorDownloadFormat" class="text-slate-300 font-semibold">Download as:</label>
+                    <select id="editorDownloadFormat" class="p-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="image/png">PNG</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                    <button
+                        id="downloadEditorEditedButton"
+                        class="py-3 px-6 rounded-xl text-gray-800 font-semibold text-lg btn-secondary-editor from-yellow-300 to-yellow-400 hover:from-yellow-400 hover:to-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2"
+                    >
+                        Download Edited Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Gallery Section -->
+        <div id="gallerySection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
+                    Your Image Gallery
+                </span>
+            </h1>
+
+            <p class="text-slate-300 mb-8 text-lg md:text-xl">
+                View your generated and edited images here.
+            </p>
+
+            <div class="flex justify-center mb-6 space-x-4">
+                <button id="clearGalleryButton" class="px-6 py-3 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors duration-200">
+                    Clear All Images
+                </button>
+            </div>
+
+            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Images will be loaded here dynamically -->
+            </div>
+
+            <p id="noImagesMessage" class="text-slate-400 text-lg mt-8 hidden">No images in your gallery yet. Generate or edit some images!</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Global API Key ---
+        const API_KEY = "AIzaSyDdS6Djy4akybiUahN29seSf56jPNl-I-4"; // Your provided API Key
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
+
+        // --- Local Storage Key ---
+        const GALLERY_STORAGE_KEY = 'imageProGalleryImages'; // Changed to store multiple images
+
+        // --- Common Utility Functions ---
+        function displayError(message, container) {
+            if (container) {
+                container.textContent = message;
+                container.classList.remove('hidden');
+                container.classList.add('opacity-100');
+            }
+        }
+
+        function hideError(container) {
+            if (container) {
+                container.classList.remove('opacity-100');
+                container.classList.add('hidden');
+                container.textContent = '';
+            }
+        }
+
+        /**
+         * Stores an image and its prompt in local storage as part of a gallery array.
+         * @param {string} imageDataUrl - The data URL of the image.
+         * @param {string} mimeType - The MIME type of the image.
+         * @param {string} promptText - The prompt used to generate/edit the image.
+         */
+        function storeImageInGallery(imageDataUrl, mimeType, promptText) {
+            try {
+                const existingImages = retrieveGalleryImages();
+                const newImage = {
+                    id: Date.now().toString(), // Unique ID for each image
+                    data: imageDataUrl,
+                    mimeType: mimeType,
+                    prompt: promptText,
+                    timestamp: Date.now()
+                };
+                existingImages.push(newImage);
+                localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(existingImages));
+                console.log('Image stored in gallery local storage.');
+            } catch (e) {
+                console.error('Failed to store image in local storage:', e);
+            }
+        }
+
+        /**
+         * Retrieves all stored images from local storage.
+         * @returns {Array<object>} An array of stored image data.
+         */
+        function retrieveGalleryImages() {
+            try {
+                const storedData = localStorage.getItem(GALLERY_STORAGE_KEY);
+                return storedData ? JSON.parse(storedData) : [];
+            } catch (e) {
+                console.error('Failed to retrieve images from local storage:', e);
+                return [];
+            }
+        }
+
+        /**
+         * Deletes a specific image from the gallery based on its ID.
+         * @param {string} imageId - The ID of the image to delete.
+         */
+        function deleteImageFromGallery(imageId) {
+            let existingImages = retrieveGalleryImages();
+            const updatedImages = existingImages.filter(img => img.id !== imageId);
+            localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(updatedImages));
+            console.log(`Image with ID ${imageId} deleted from gallery.`);
+            renderGallery(); // Re-render the gallery after deletion
+        }
+
+        /**
+         * Clears all images from the gallery.
+         */
+        function clearGallery() {
+            // Replaced alert with a custom confirmation dialog (simple for now)
+            const confirmClear = document.createElement('div');
+            confirmClear.className = 'fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[2000]';
+            confirmClear.innerHTML = `
+                <div class="bg-slate-800 p-8 rounded-lg shadow-xl text-center border border-slate-700 max-w-sm">
+                    <p class="text-white text-lg mb-6">Are you sure you want to clear all images from your gallery? This cannot be undone.</p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="confirmClearYes" class="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700">Yes, Clear All</button>
+                        <button id="confirmClearNo" class="px-6 py-2 rounded-lg bg-gray-600 text-white font-semibold hover:bg-gray-700">No, Cancel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmClear);
+
+            document.getElementById('confirmClearYes').onclick = () => {
+                localStorage.removeItem(GALLERY_STORAGE_KEY);
+                console.log('All images cleared from gallery.');
+                renderGallery();
+                document.body.removeChild(confirmClear);
+            };
+
+            document.getElementById('confirmClearNo').onclick = () => {
+                document.body.removeChild(confirmClear);
+            };
+        }
+
+
+        // --- Navigation Logic ---
+        const homeSection = document.getElementById('homeSection');
+        const generatorSection = document.getElementById('generatorSection');
+        const editorSection = document.getElementById('editorSection');
+        const gallerySection = document.getElementById('gallerySection'); // New gallery section
+
+        const menuToggleBtn = document.getElementById('menuToggleBtn'); // Hamburger icon button
+        const navMenu = document.getElementById('navMenu'); // The dropdown menu container
+
+        const showHomeBtn = document.getElementById('showHomeBtn');
+        const showGeneratorBtn = document.getElementById('showGeneratorBtn');
+        const showEditorBtn = document.getElementById('showEditorBtn');
+        const showGalleryBtn = document.getElementById('showGalleryBtn'); // New gallery button
+
+        // Function to toggle the navigation menu visibility
+        function toggleMenu() {
+            navMenu.classList.toggle('show-menu'); // Use 'show-menu' class for animation
+            if (!navMenu.classList.contains('show-menu')) {
+                // If hiding, add 'hidden' after transition
+                navMenu.addEventListener('transitionend', function handler() {
+                    navMenu.classList.add('hidden');
+                    navMenu.removeEventListener('transitionend', handler);
+                });
+            } else {
+                navMenu.classList.remove('hidden'); // Remove hidden immediately to start transition
+            }
+        }
+
+        // Function to close the navigation menu
+        function closeMenu() {
+            if (navMenu.classList.contains('show-menu')) {
+                navMenu.classList.remove('show-menu');
+                navMenu.addEventListener('transitionend', function handler() {
+                    navMenu.classList.add('hidden');
+                    navMenu.removeEventListener('transitionend', handler);
+                });
+            }
+        }
+
+        /**
+         * Shows a specific section and optionally pre-fills content.
+         * @param {string} sectionId - The ID of the section to show ('home', 'generator', 'editor', 'gallery').
+         * @param {object} [data] - Optional data to pre-fill inputs.
+         * @param {string} [data.prompt] - A prompt string for generator/editor.
+         * @param {string} [data.image] - A data URL for the editor image preview.
+         */
+        function showSection(sectionId, data = {}) {
+            // Hide all sections first
+            homeSection.classList.add('hidden');
+            generatorSection.classList.add('hidden');
+            editorSection.classList.add('hidden');
+            gallerySection.classList.add('hidden'); // Hide gallery section too
+
+            // Reset all menu button styles
+            const allMenuButtons = [showHomeBtn, showGeneratorBtn, showEditorBtn, showGalleryBtn];
+            allMenuButtons.forEach(btn => {
+                btn.classList.remove('active'); // Remove active class
+            });
+
+            // Show the selected section and update button style
+            if (sectionId === 'home') {
+                homeSection.classList.remove('hidden');
+                showHomeBtn.classList.add('active'); // Add active class
+            } else if (sectionId === 'generator') {
+                generatorSection.classList.remove('hidden');
+                showGeneratorBtn.classList.add('active'); // Add active class
+                if (data.prompt) {
+                    generatorPromptInput.value = data.prompt;
+                }
+                // Hide previous results when navigating to generator
+                generatedImageResultContainer.classList.add('hidden');
+            } else if (sectionId === 'editor') {
+                editorSection.classList.remove('hidden');
+                showEditorBtn.classList.add('active'); // Add active class
+                if (data.prompt) {
+                    editorPromptInputText.value = data.prompt;
+                }
+                if (data.image) {
+                    // Simulate file upload for the example image
+                    // This is a simplified approach, a real file input would need a DataTransfer object
+                    editorImagePreview.src = data.image;
+                    editorImagePreview.classList.remove('hidden');
+                    editorImagePlaceholder.classList.add('hidden');
+                    editorFileNameDisplay.textContent = 'example_image.png'; // Mock filename
+                    editorFileNameDisplay.classList.remove('text-gray-400');
+                    editorFileNameDisplay.classList.add('text-gray-800');
+                    editorUploadedImageBase64 = data.image;
+                    editorUploadedImageMimeType = 'image/png'; // Assume png for example
+                } else {
+                    // Clear editor inputs if no example image is provided
+                    editorImagePreview.src = '#';
+                    editorImagePreview.classList.add('hidden');
+                    editorImagePlaceholder.classList.remove('hidden');
+                    editorFileNameDisplay.textContent = 'No file chosen';
+                    editorFileNameDisplay.classList.remove('text-gray-800');
+                    editorFileNameDisplay.classList.add('text-gray-400');
+                    editorUploadedImageBase64 = null;
+                    editorUploadedImageMimeType = null;
+                }
+                // Hide previous results when navigating to editor
+                editorEditedImageResultContainer.classList.add('hidden');
+            } else if (sectionId === 'gallery') { // Handle gallery section
+                gallerySection.classList.remove('hidden');
+                showGalleryBtn.classList.add('active'); // Add active class
+                renderGallery(); // Render gallery images when shown
+            }
+            closeMenu(); // Close menu after selection
+        }
+
+        // Event Listeners for new menu system
+        menuToggleBtn.addEventListener('click', toggleMenu);
+        showHomeBtn.addEventListener('click', () => showSection('home'));
+        showGeneratorBtn.addEventListener('click', () => showSection('generator'));
+        showEditorBtn.addEventListener('click', () => showSection('editor'));
+        showGalleryBtn.addEventListener('click', () => showSection('gallery')); // Event listener for gallery button
+
+        // Close menu if clicked outside
+        document.addEventListener('click', (event) => {
+            if (!navMenu.contains(event.target) && !menuToggleBtn.contains(event.target) && navMenu.classList.contains('show-menu')) {
+                closeMenu();
+            }
+        });
+
+        // --- Image Generator Logic ---
+        const generatorPromptInput = document.getElementById('generatorPromptInput');
+        const generateImageButton = document.getElementById('generateImageButton');
+        const generateButtonContent = document.getElementById('generateButtonContent');
+        const generatorErrorContainer = document.getElementById('generatorErrorContainer');
+        const generatedImageResultContainer = document.getElementById('generatedImageResultContainer');
+        const generatedImage = document.getElementById('generatedImage');
+        const downloadGeneratedButton = document.getElementById('downloadGeneratedButton');
+        const generatorDownloadFormat = document.getElementById('generatorDownloadFormat'); // New select element
+
+        function setGeneratorLoadingState(isLoading) {
+            if (isLoading) {
+                generateImageButton.disabled = true;
+                generateImageButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                generateImageButton.classList.remove('btn-gradient');
+                generateButtonContent.innerHTML = `
+                    <svg class="animate-spin-custom h-7 w-7 mr-3 text-white" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.000 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Generating...</span>
+                `;
+            } else {
+                generateImageButton.disabled = false;
+                generateImageButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                generateImageButton.classList.add('btn-gradient');
+                generateButtonContent.innerHTML = `<span>Generate Image</span>`;
+            }
+        }
+
+        async function generateImage() {
+            setGeneratorLoadingState(true);
+            hideError(generatorErrorContainer);
+            generatedImageResultContainer.classList.add('hidden'); // Ensure hidden on new generation
+            generatedImage.classList.remove('image-loaded-glow');
+
+            const prompt = generatorPromptInput.value.trim();
+
+            if (!prompt) {
+                displayError('Please enter a prompt to generate an image.', generatorErrorContainer);
+                setGeneratorLoadingState(false);
+                return;
+            }
+
+            try {
+                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseModalities: ["TEXT", "IMAGE"]
+                    }
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error: ${errorData.error.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                let imageFound = false;
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts) {
+
+                    for (const part of result.candidates[0].content.parts) {
+                        if (part.inlineData && part.inlineData.mimeType.startsWith('image/') && part.inlineData.data) {
+                            const imageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+                            generatedImage.src = imageUrl;
+                            generatedImageResultContainer.classList.remove('hidden'); // Show on success
+
+                            generatedImage.onload = () => {
+                                generatedImage.classList.add('image-loaded-glow');
+                            };
+                            imageFound = true;
+                            // Store the generated image in local storage
+                            storeImageInGallery(imageUrl, part.inlineData.mimeType, prompt); // Use new store function
+                            break;
+                        }
+                    }
+                }
+
+                if (!imageFound) {
+                    displayError('No image data received in the API response. Please try a different prompt.', generatorErrorContainer);
+                }
+
+            } catch (err) {
+                displayError(`Error generating image: ${err.message}`, generatorErrorContainer);
+                console.error('Generation error:', err);
+            } finally {
+                setGeneratorLoadingState(false);
+            }
+        }
+
+        function downloadImage(imgSrc, format, filenamePrefix) {
+            if (!imgSrc || imgSrc === window.location.href) {
+                console.warn('No image to download or image source is invalid.');
+                return;
+            }
+
+            const filename = `${filenamePrefix}.${format.split('/')[1]}`;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+
+                // For JPEG, specify quality (0.0 to 1.0)
+                const quality = format === 'image/jpeg' ? 0.8 : 1.0;
+                const dataUrl = canvas.toDataURL(format, quality);
+
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                console.log(`Image downloaded successfully as ${format}!`);
+            };
+            img.onerror = () => {
+                console.error('Failed to load image for download.');
+            };
+            img.src = imgSrc;
+        }
+
+        function downloadGeneratedImage() {
+            downloadImage(generatedImage.src, generatorDownloadFormat.value, 'generated_image');
+        }
+
+
+        // Generator Event Listeners
+        generateImageButton.addEventListener('click', generateImage);
+        downloadGeneratedButton.addEventListener('click', downloadGeneratedImage);
+
+        // --- Image Editor Logic ---
+        const editorImageUpload = document.getElementById('editorImageUpload');
+        const editorCustomFileUploadButton = document.getElementById('editorCustomFileUploadButton');
+        const editorFileNameDisplay = document.getElementById('editorFileNameDisplay');
+        const editorImagePreview = document.getElementById('editorImagePreview');
+        const editorPreviewContainer = document.getElementById('editorPreviewContainer');
+        const editorImagePlaceholder = document.getElementById('editorImagePlaceholder');
+        const editorPromptInputText = document.getElementById('editorPromptInputText');
+        const editorEditButton = document.getElementById('editorEditButton');
+        const editorButtonContent = document.getElementById('editorButtonContent');
+        const editorErrorContainer = document.getElementById('editorErrorContainer');
+        const editorEditedImageResultContainer = document.getElementById('editorEditedImageResultContainer');
+        const editorEditedImage = document.getElementById('editorEditedImage');
+        const downloadEditorEditedButton = document.getElementById('downloadEditorEditedButton');
+        const editorDownloadFormat = document.getElementById('editorDownloadFormat'); // New select element
+
+        let editorUploadedImageBase64 = null;
+        let editorUploadedImageMimeType = null;
+
+        function setEditorLoadingState(isLoading) {
+            if (isLoading) {
+                editorEditButton.disabled = true;
+                editorEditButton.classList.add('btn-primary-editor', 'disabled');
+                editorEditButton.classList.remove('from-blue-700', 'to-blue-800', 'hover:from-blue-800', 'hover:to-blue-900', 'active:from-blue-900', 'active:to-blue-950', 'hover:-translate-y-1', 'hover:shadow-xl');
+                editorButtonContent.innerHTML = `
+                    <svg class="animate-spin-custom h-6 w-6 mr-3 text-white" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.000 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Editing...</span>
+                `;
+            } else {
+                editorEditButton.disabled = false;
+                editorEditButton.classList.remove('btn-primary-editor', 'disabled');
+                editorEditButton.classList.add('from-blue-700', 'to-blue-800', 'hover:from-blue-800', 'hover:to-blue-900', 'active:from-blue-900', 'active:to-blue-950', 'hover:-translate-y-1', 'hover:shadow-xl');
+                editorButtonContent.innerHTML = `<span>AI Enhance Image</span>`;
+            }
+        }
+
+        async function editImage() {
+            setEditorLoadingState(true);
+            hideError(editorErrorContainer);
+            editorEditedImageResultContainer.classList.add('hidden'); // Ensure hidden on new edit
+
+            const prompt = editorPromptInputText.value.trim();
+
+            if (!editorUploadedImageBase64) {
+                displayError('Please upload an image first.', editorErrorContainer);
+                setEditorLoadingState(false);
+                return;
+            }
+
+            if (!prompt) {
+                displayError('Please enter a prompt describing how to edit the image.', editorErrorContainer);
+                setEditorLoadingState(false);
+                return;
+            }
+
+            try {
+                const chatHistory = [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: prompt },
+                            {
+                                inlineData: {
+                                    mimeType: editorUploadedImageMimeType,
+                                    data: editorUploadedImageBase64.split(',')[1]
+                                }
+                            }
+                        ]
+                    }
+                ];
+
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseModalities: ["TEXT", "IMAGE"]
+                    }
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error: ${errorData.error.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                let imageFound = false;
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts) {
+
+                    for (const part of result.candidates[0].content.parts) {
+                        if (part.inlineData && part.inlineData.mimeType.startsWith('image/') && part.inlineData.data) {
+                            const editedImageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+                            editorEditedImage.src = editedImageUrl;
+                            editorEditedImageResultContainer.classList.remove('hidden'); // Show on success
+
+                            editorEditedImage.onload = () => {
+                                editorEditedImage.classList.add('image-loaded-glow');
+                            };
+                            imageFound = true;
+                            // Store the edited image in local storage
+                            storeImageInGallery(editedImageUrl, part.inlineData.mimeType, prompt); // Use new store function
+                            break;
+                        }
+                        }
+                    }
+
+                if (!imageFound) {
+                    displayError('AI did not return an image. Try refining your prompt.', editorErrorContainer);
+                }
+
+            } catch (err) {
+                displayError(`AI editing failed: ${err.message}`, editorErrorContainer);
+                console.error('Generation error:', err);
+            } finally {
+                setEditorLoadingState(false);
+            }
+        }
+
+        function downloadEditorEditedImage() {
+            downloadImage(editorEditedImage.src, editorDownloadFormat.value, 'ai_enhanced_image');
+        }
+
+        function handleEditorImageUpload(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    editorUploadedImageBase64 = e.target.result;
+                    editorUploadedImageMimeType = file.type;
+
+                    editorImagePreview.src = editorUploadedImageBase64;
+                    editorImagePreview.classList.remove('hidden');
+                    editorImagePlaceholder.classList.add('hidden');
+                    editorFileNameDisplay.textContent = file.name;
+                    // Changed text color for dark theme
+                    editorFileNameDisplay.classList.remove('text-slate-400'); // Remove old light color class
+                    editorFileNameDisplay.classList.add('text-slate-200'); // Add new dark color class
+
+                    hideError(editorErrorContainer);
+                };
+                reader.onerror = function() {
+                    displayError('Failed to read image file.', editorErrorContainer);
+                    editorUploadedImageBase64 = null;
+                    editorUploadedImageMimeType = null;
+                    editorImagePreview.classList.add('hidden');
+                    editorImagePlaceholder.classList.remove('hidden');
+                    editorFileNameDisplay.textContent = 'No file chosen';
+                    // Changed text color for dark theme
+                    editorFileNameDisplay.classList.remove('text-slate-200'); // Remove new dark color class
+                    editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
+                };
+                reader.readAsDataURL(file);
+            } else {
+                editorUploadedImageBase64 = null;
+                editorUploadedImageMimeType = null;
+                editorImagePreview.classList.add('hidden');
+                editorImagePlaceholder.classList.remove('hidden');
+                editorFileNameDisplay.textContent = 'No file chosen';
+                // Changed text color for dark theme
+                editorFileNameDisplay.classList.remove('text-slate-200'); // Remove new dark color class
+                editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
+            }
+        }
+
+        // Editor Event Listeners
+        editorCustomFileUploadButton.addEventListener('click', () => editorImageUpload.click());
+        editorImageUpload.addEventListener('change', handleEditorImageUpload);
+        editorEditButton.addEventListener('click', editImage);
+        downloadEditorEditedButton.addEventListener('click', downloadEditorEditedImage);
+
+
+        // --- Gallery Logic ---
+        const galleryGrid = document.getElementById('galleryGrid');
+        const clearGalleryButton = document.getElementById('clearGalleryButton');
+        const noImagesMessage = document.getElementById('noImagesMessage');
+
+        /**
+         * Renders all images currently stored in the gallery.
+         */
+        function renderGallery() {
+            galleryGrid.innerHTML = ''; // Clear existing images
+            const images = retrieveGalleryImages();
+
+            if (images.length === 0) {
+                noImagesMessage.classList.remove('hidden');
+            } else {
+                noImagesMessage.classList.add('hidden');
+                // Sort images by timestamp in descending order (newest first)
+                images.sort((a, b) => b.timestamp - a.timestamp);
+
+                images.forEach(imgData => {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'relative bg-slate-800 bg-opacity-70 rounded-xl shadow-lg p-4 flex flex-col items-center justify-between space-y-3 border border-blue-700 border-opacity-50';
+                    imgContainer.style.animation = 'fadeIn 0.6s ease-out forwards'; // Apply fade-in animation
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imgData.data;
+                    imgElement.alt = imgData.prompt; // Use prompt as alt text for accessibility
+                    imgElement.className = 'max-w-full h-48 object-contain rounded-lg shadow-md mb-3';
+
+                    const promptText = document.createElement('p');
+                    promptText.className = 'text-slate-300 text-sm italic text-center break-words max-h-20 overflow-hidden';
+                    promptText.textContent = `Prompt: "${imgData.prompt}"`;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'mt-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors duration-200 text-sm font-semibold';
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = () => deleteImageFromGallery(imgData.id);
+
+                    imgContainer.appendChild(imgElement);
+                    imgContainer.appendChild(promptText);
+                    imgContainer.appendChild(deleteButton);
+                    galleryGrid.appendChild(imgContainer);
+                });
+            }
+        }
+
+        // Gallery Event Listeners
+        clearGalleryButton.addEventListener('click', clearGallery);
+
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show Home section by default
+            showSection('home');
+            // Initial render of gallery (though it's hidden, it sets up the state)
+            renderGallery();
+        });
+    </script>
+</body>
+</html>
