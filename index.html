@@ -1173,14 +1173,25 @@
                     promptText.className = 'text-slate-300 text-sm italic text-center break-words max-h-20 overflow-hidden';
                     promptText.textContent = `Prompt: "${imgData.prompt}"`;
 
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'flex space-x-2 mt-2';
+
+                    const downloadButton = document.createElement('button');
+                    downloadButton.className = 'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-semibold';
+                    downloadButton.textContent = 'Download';
+                    downloadButton.onclick = () => downloadImage(imgData.data, imgData.mimeType, `gallery_image_${imgData.id}`);
+
                     const deleteButton = document.createElement('button');
-                    deleteButton.className = 'mt-2 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors duration-200 text-sm font-semibold';
+                    deleteButton.className = 'px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors duration-200 text-sm font-semibold';
                     deleteButton.textContent = 'Delete';
                     deleteButton.onclick = () => deleteImageFromGallery(imgData.id);
 
+                    buttonContainer.appendChild(downloadButton);
+                    buttonContainer.appendChild(deleteButton);
+
                     imgContainer.appendChild(imgElement);
                     imgContainer.appendChild(promptText);
-                    imgContainer.appendChild(deleteButton);
+                    imgContainer.appendChild(buttonContainer); // Append the button container
                     galleryGrid.appendChild(imgContainer);
                 });
             }
