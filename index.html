@@ -236,6 +236,84 @@
             background-color: #3b82f6; /* Medium blue */
             color: #ffffff;
         }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #1a202c; /* Dark background */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid #3b82f6; /* Blue border */
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #cbd5e1; /* Light gray */
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal-close-btn:hover {
+            color: #ffffff;
+        }
+        .gallery-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            padding-top: 1rem;
+        }
+        .gallery-modal-item {
+            background-color: #2d3748; /* Darker slate */
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .gallery-modal-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); /* Blue shadow on hover */
+        }
+        .gallery-modal-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-bottom: 1px solid #4a5568;
+        }
+        .gallery-modal-item p {
+            color: #e2e8f0; /* Off-white */
+            font-size: 0.875rem;
+            padding: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-950 flex flex-col items-center justify-center p-4 font-sans overflow-y-auto">
@@ -398,6 +476,10 @@
                         </svg>
                         <span>Choose File</span>
                     </div>
+                    <!-- New: Select from Gallery Button -->
+                    <button id="editorSelectFromGalleryButton" class="px-4 py-2 rounded-xl bg-gray-600 text-white font-semibold text-sm hover:bg-gray-700 transition-colors duration-200 shadow-md">
+                        Select from Gallery
+                    </button>
                     <span id="editorFileNameDisplay" class="custom-file-upload-text text-slate-400">No file chosen</span>
                 </div>
 
@@ -486,6 +568,18 @@
         </div>
     </div>
 
+    <!-- Gallery Selection Modal -->
+    <div id="gallerySelectionModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="closeGalleryModalBtn">&times;</button>
+            <h2 class="text-2xl font-bold text-white mb-6 text-center">Select an Image from Gallery</h2>
+            <div id="galleryModalGrid" class="gallery-modal-grid">
+                <!-- Gallery images will be loaded here -->
+            </div>
+            <p id="noImagesModalMessage" class="text-slate-400 text-lg mt-8 text-center hidden">No images in your gallery yet.</p>
+        </div>
+    </div>
+
     <script>
         // --- Global API Key ---
          // Please don't steal this.Because it is free tier API KEY.
@@ -494,7 +588,7 @@
         // don't post about this on social media.please!
         // mahidhartatipakala@gmail.com
         // I can't afford backend.please!
-        const API_KEY = "AIzaSyBl5fGiL7eb8zvrZexCdO1oPVwtTQVm8L8"; 
+        const API_KEY = "AIzaSyDdS6Djy4akybiUahN29seSf56jPNl-I-4"; // Your provided API Key
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
 
         // --- Local Storage Key ---
@@ -879,6 +973,7 @@
         const editorEditedImage = document.getElementById('editorEditedImage');
         const downloadEditorEditedButton = document.getElementById('downloadEditorEditedButton');
         const editorDownloadFormat = document.getElementById('editorDownloadFormat'); // New select element
+        const editorSelectFromGalleryButton = document.getElementById('editorSelectFromGalleryButton'); // New: Select from Gallery Button
 
         let editorUploadedImageBase64 = null;
         let editorUploadedImageMimeType = null;
@@ -1093,6 +1188,67 @@
 
         // Gallery Event Listeners
         clearGalleryButton.addEventListener('click', clearGallery);
+
+
+        // --- Gallery Selection Modal Logic ---
+        const gallerySelectionModal = document.getElementById('gallerySelectionModal');
+        const galleryModalGrid = document.getElementById('galleryModalGrid');
+        const closeGalleryModalBtn = document.getElementById('closeGalleryModalBtn');
+        const noImagesModalMessage = document.getElementById('noImagesModalMessage');
+
+        function openGallerySelectionModal() {
+            galleryModalGrid.innerHTML = ''; // Clear previous images
+            const images = retrieveGalleryImages();
+
+            if (images.length === 0) {
+                noImagesModalMessage.classList.remove('hidden');
+            } else {
+                noImagesModalMessage.classList.add('hidden');
+                // Sort images by timestamp in descending order (newest first)
+                images.sort((a, b) => b.timestamp - a.timestamp);
+
+                images.forEach(imgData => {
+                    const imgItem = document.createElement('div');
+                    imgItem.className = 'gallery-modal-item';
+                    imgItem.onclick = () => selectImageFromGalleryModal(imgData.data, imgData.mimeType, imgData.prompt);
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imgData.data;
+                    imgElement.alt = imgData.prompt;
+
+                    const promptText = document.createElement('p');
+                    promptText.textContent = imgData.prompt;
+
+                    imgItem.appendChild(imgElement);
+                    imgItem.appendChild(promptText);
+                    galleryModalGrid.appendChild(imgItem);
+                });
+            }
+            gallerySelectionModal.classList.add('show');
+        }
+
+        function closeGallerySelectionModal() {
+            gallerySelectionModal.classList.remove('show');
+        }
+
+        function selectImageFromGalleryModal(imageDataUrl, mimeType, promptText) {
+            editorUploadedImageBase64 = imageDataUrl;
+            editorUploadedImageMimeType = mimeType;
+
+            editorImagePreview.src = editorUploadedImageBase64;
+            editorImagePreview.classList.remove('hidden');
+            editorImagePlaceholder.classList.add('hidden');
+            editorFileNameDisplay.textContent = `Selected from Gallery: ${promptText.substring(0, 20)}...`; // Show a snippet of prompt as filename
+            editorFileNameDisplay.classList.remove('text-slate-400');
+            editorFileNameDisplay.classList.add('text-slate-200'); // Changed text color for dark theme
+
+            hideError(editorErrorContainer);
+            closeGallerySelectionModal(); // Close modal after selection
+        }
+
+        // Event Listeners for Gallery Selection Modal
+        editorSelectFromGalleryButton.addEventListener('click', openGallerySelectionModal);
+        closeGalleryModalBtn.addEventListener('click', closeGallerySelectionModal);
 
 
         // --- Initial Load ---
