@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Pro</title>
+    <!-- Google Analytics (add this block) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9WRG031HPT'); // Replace with your actual Measurement ID
+    </script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -281,7 +290,7 @@
             <div class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl mx-auto my-8 border border-blue-700 border-opacity-30">
                 <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Editor</h2>
                 <p class="text-slate-300 mb-6 text-lg text-left">
-                    The Image Editor empowers users with AI-driven image manipulation. Its intuitive file upload mechanism, featuring a custom button and a clear preview area, ensures a smooth onboarding experience for any image. Users can articulate complex editing instructions via a dedicated text input, allowing for precise control over transformations such as style transfer, object manipulation, or background alterations. The "AI Enhance Image" button triggers sophisticated image-to-image translation models. The responsive design ensures consistent usability across devices, and the ability to download edited images in multiple formats caters to diverse professional and creative needs, all while maintaining visual fidelity.
+                    The Image Editor empowers users with AI-driven image manipulation. Its intuitive file upload mechanism, featuring a custom button and a clear preview area, ensures a smooth onboarding experience for any image. Users can articulate complex editing instructions via a dedicated text input, allowing for precise control over transformations such as style transfer, object manipulation, or background alterations. The "Edit Image" button triggers sophisticated image-to-image translation models. The responsive design ensures consistent usability across devices, and the ability to download edited images in multiple formats caters to diverse professional and creative needs, all while maintaining visual fidelity.
                 </p>
                 <button onclick="showSection('editor')" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
                     Try Image Editor
@@ -479,13 +488,7 @@
 
     <script>
         // --- Global API Key ---
-        // Please don't steal this.Because it is free tier API KEY.
-        const API_KEY = "AIzaSyBl5fGiL7eb8zvrZexCdO1oPVwtTQVm8L8"; 
-        // You can also get one for free in Google AI studio.
-        // if you see this please this don't make it public.
-        // don't post about this on social media.please!
-        // mahidhartatipakala@gmail.com
-        // I can't afford backend.please!
+        const API_KEY = "AIzaSyDdS6Djy4akybiUahN29seSf56jPNl-I-4"; // Your provided API Key
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
 
         // --- Local Storage Key ---
