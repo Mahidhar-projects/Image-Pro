@@ -591,27 +591,15 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="w-full bg-slate-900 bg-opacity-80 text-white text-center p-4 mt-12 rounded-t-xl shadow-lg">
-        <p class="text-lg">
-            Download the Image Pro Android App:
-            <a href="https://drive.google.com/uc?export=download&id=12zeNu0vXcQGpSDzHwtWFYN8UidxVUri_"
-               target="_blank" rel="noopener noreferrer"
-               class="text-blue-400 hover:text-blue-300 underline font-semibold ml-2">
-                Download APK
-            </a>
-        </p>
-    </footer>
-
     <script>
         // --- Global API Key ---
-         // Please don't steal this.Because it is free tier API KEY.
+        // Please don't steal this.Because it is free tier API KEY.
         // You can also get one for free in Google AI studio.
         // if you see this please this don't make it public.
         // don't post about this on social media.please!
         // mahidhartatipakala@gmail.com
         // I can't afford backend.please!
-        const API_KEY = "AIzaSyBl5fGiL7eb8zvrZexCdO1oPVwtTQVm8L8"; 
+        const API_KEY = "AIzaSyDdS6Djy4akybiUahN29seSf56jPNl-I-4"; // Your provided API Key
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
 
         // --- Local Storage Key ---
@@ -1114,11 +1102,14 @@
         }
 
         function handleEditorImageUpload(event) {
+            console.log('handleEditorImageUpload triggered.');
             const file = event.target.files[0];
 
             if (file) {
+                console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    console.log('FileReader loaded successfully.');
                     editorUploadedImageBase64 = e.target.result;
                     editorUploadedImageMimeType = file.type;
 
@@ -1132,8 +1123,9 @@
 
                     hideError(editorErrorContainer);
                 };
-                reader.onerror = function() {
-                    displayError('Failed to read image file.', editorErrorContainer);
+                reader.onerror = function(error) {
+                    console.error('FileReader error:', error);
+                    displayError('Failed to read image file. Error: ' + error.message, editorErrorContainer);
                     editorUploadedImageBase64 = null;
                     editorUploadedImageMimeType = null;
                     editorImagePreview.classList.add('hidden');
@@ -1145,6 +1137,7 @@
                 };
                 reader.readAsDataURL(file);
             } else {
+                console.log('No file selected or file input cleared.');
                 editorUploadedImageBase64 = null;
                 editorUploadedImageMimeType = null;
                 editorImagePreview.classList.add('hidden');
@@ -1152,12 +1145,15 @@
                 editorFileNameDisplay.textContent = 'No file chosen';
                 // Changed text color for dark theme
                 editorFileNameDisplay.classList.remove('text-slate-200'); // Remove new dark color class
-                editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
+                    editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
             }
         }
 
         // Editor Event Listeners
-        editorCustomFileUploadButton.addEventListener('click', () => editorImageUpload.click());
+        editorCustomFileUploadButton.addEventListener('click', () => {
+            console.log('Custom file upload button clicked.');
+            editorImageUpload.click();
+        });
         editorImageUpload.addEventListener('change', handleEditorImageUpload);
         editorEditButton.addEventListener('click', editImage);
         downloadEditorEditedButton.addEventListener('click', downloadEditorEditedImage);
@@ -1231,11 +1227,13 @@
         const noImagesModalMessage = document.getElementById('noImagesModalMessage');
 
         function openGallerySelectionModal() {
+            console.log('Opening gallery selection modal.');
             galleryModalGrid.innerHTML = ''; // Clear previous images
             const images = retrieveGalleryImages();
 
             if (images.length === 0) {
                 noImagesModalMessage.classList.remove('hidden');
+                console.log('No images in gallery to display in modal.');
             } else {
                 noImagesModalMessage.classList.add('hidden');
                 // Sort images by timestamp in descending order (newest first)
@@ -1257,15 +1255,18 @@
                     imgItem.appendChild(promptText);
                     galleryModalGrid.appendChild(imgItem);
                 });
+                console.log(`Displayed ${images.length} images in modal.`);
             }
             gallerySelectionModal.classList.add('show');
         }
 
         function closeGallerySelectionModal() {
+            console.log('Closing gallery selection modal.');
             gallerySelectionModal.classList.remove('show');
         }
 
         function selectImageFromGalleryModal(imageDataUrl, mimeType, promptText) {
+            console.log('Image selected from gallery modal.');
             editorUploadedImageBase64 = imageDataUrl;
             editorUploadedImageMimeType = mimeType;
 
