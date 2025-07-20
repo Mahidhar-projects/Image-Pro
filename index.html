@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Pro</title>
-    <!-- Google Analytics (add this block) -->
+    <title>Image Pro: AI Image Generator & Editor | Create Stunning Visuals</title> <!-- SEO: Updated Title Tag -->
+    <meta name="description" content="Unleash your creativity with Image Pro's AI-powered image generation and editing tools. Generate unique images from text prompts and transform your photos."> <!-- SEO: Added Meta Description -->
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -339,6 +341,10 @@
             </svg>
             <span class="text-3xl font-extrabold text-white">Image Pro</span>
         </div>
+        <div class="flex items-center space-x-4">
+            <span id="userStatus" class="text-slate-300 text-sm font-medium"></span>
+            <!-- Login/Signup/Logout buttons removed -->
+        </div>
     </div>
 
     <!-- Navigation Menu (Dropdown) -->
@@ -352,9 +358,9 @@
     <!-- Main Content Sections (Adjusted padding-top to account for fixed header) -->
     <div class="pt-20 w-full flex flex-col items-center"> <!-- Added pt-20 to push content down -->
 
-        <!-- Home Section - Updated Layout without Carousel -->
+        <!-- Home Section -->
         <div id="homeSection" class="w-full max-w-4xl text-center mx-auto my-8 transform transition-all duration-700 flex flex-col justify-center min-h-[calc(100vh-80px)]">
-            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight"> <!-- SEO: Main H1 for the page -->
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
                     Welcome to Image Pro!
                 </span>
@@ -366,37 +372,37 @@
 
             <!-- Image Generator Description and Button -->
             <div class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl mx-auto my-8 border border-blue-700 border-opacity-30">
-                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Generator</h2>
+                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Generator</h2> <!-- SEO: H2 for Generator section -->
                 <p class="text-slate-300 mb-6 text-lg text-left">
                     The Image Generator leverages cutting-edge generative AI models to transform textual prompts into rich visual masterpieces. Users interact with a streamlined interface featuring a spacious, responsive text area for detailed prompt input, supporting complex descriptions for highly nuanced outputs. The "Generate Image" button initiates a real-time rendering process, providing immediate visual feedback. The design prioritizes minimal cognitive load, ensuring that even intricate image generation is accessible and efficient, with options to download in various high-quality formats (PNG, JPEG, WebP) for optimal versatility. Error handling is robust, guiding users with clear, actionable messages.
                 </p>
-                <button onclick="showSection('generator')" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                <button id="homeToGeneratorBtn" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
                     Try Image Generator
                 </button>
             </div>
 
             <!-- Image Editor Description and Button -->
             <div class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl mx-auto my-8 border border-blue-700 border-opacity-30">
-                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Editor</h2>
+                <h2 class="text-3xl font-bold text-slate-100 mb-4">Image Editor</h2> <!-- SEO: H2 for Editor section -->
                 <p class="text-slate-300 mb-6 text-lg text-left">
                     The Image Editor empowers users with AI-driven image manipulation. Its intuitive file upload mechanism, featuring a custom button and a clear preview area, ensures a smooth onboarding experience for any image. Users can articulate complex editing instructions via a dedicated text input, allowing for precise control over transformations such as style transfer, object manipulation, or background alterations. The "Edit Image" button triggers sophisticated image-to-image translation models. The responsive design ensures consistent usability across devices, and the ability to download edited images in multiple formats caters to diverse professional and creative needs, all while maintaining visual fidelity.
                 </p>
-                <button onclick="showSection('editor')" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                <button id="homeToEditorBtn" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg">
                     Try Image Editor
                 </button>
             </div>
 
-            <!-- New: Open My Gallery Button -->
+            <!-- Open My Gallery Button -->
             <div class="mt-8">
-                <button onclick="showSection('gallery')" class="px-8 py-4 rounded-xl bg-purple-600 text-white font-semibold text-lg hover:bg-purple-700 transition-colors duration-200 shadow-lg">
+                <button id="homeToGalleryBtn" class="px-8 py-4 rounded-xl bg-purple-600 text-white font-semibold text-lg hover:bg-purple-700 transition-colors duration-200 shadow-lg">
                     Open My Gallery
                 </button>
             </div>
         </div>
 
-        <!-- Image Generator Section - Smaller Card -->
+        <!-- Image Generator Section -->
         <div id="generatorSection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-xl md:max-w-2xl lg:max-w-3xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6"> <!-- SEO: This H1 should ideally be H2 if Home is the primary page -->
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
                     Image Generator
                 </span>
@@ -407,6 +413,9 @@
             </p>
 
             <div class="mb-8">
+                <label for="generatorPromptInput" class="block text-left text-slate-300 text-base font-semibold mb-2">
+                    Image Prompt:
+                </label>
                 <textarea
                     id="generatorPromptInput"
                     class="w-full p-5 border border-blue-500 border-opacity-50 rounded-xl outline-none transition-all duration-400 text-slate-200 placeholder-slate-400 resize-none shadow-inner-lg bg-slate-800 bg-opacity-90 input-glow"
@@ -429,12 +438,12 @@
             </div>
 
             <div id="generatedImageResultContainer" class="mt-10 animate-fade-in-up hidden">
-                <h2 class="text-3xl font-bold text-slate-100 mb-6">Your Creation:</h2>
+                <h2 class="text-3xl font-bold text-slate-100 mb-6">Your Creation:</h2> <!-- SEO: H2 for the generated image result -->
                 <div class="relative w-full h-auto rounded-xl shadow-aura-lg border-4 border-blue-500 flex items-center justify-center bg-slate-900 bg-opacity-50 p-3 overflow-hidden">
                     <img
                         id="generatedImage"
                         src=""
-                        alt=""
+                        alt="Generated AI image based on user prompt" <!-- SEO: Descriptive Alt Text -->
                         class="max-w-full h-auto object-contain rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
                     >
                 </div>
@@ -456,9 +465,9 @@
             </div>
         </div>
 
-        <!-- Image Editor Section - Smaller Card -->
+        <!-- Image Editor Section -->
         <div id="editorSection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-xl md:max-w-2xl lg:max-w-3xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6"> <!-- SEO: This H1 should ideally be H2 if Home is the primary page -->
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
                     Image Editor
                 </span>
@@ -495,7 +504,7 @@
                 </div>
 
                 <div id="editorPreviewContainer" class="mt-6 flex justify-center items-center bg-slate-800 rounded-xl p-4 border-2 border-dashed border-blue-500 min-h-[200px] overflow-hidden shadow-lg container-transition image-container-with-animated-shadow">
-                    <img id="editorImagePreview" src="#" alt="" class="max-w-full max-h-56 object-contain rounded-lg shadow-md">
+                    <img id="editorImagePreview" src="#" alt="Preview of uploaded image" class="max-w-full max-h-56 object-contain rounded-lg shadow-md"> <!-- SEO: Descriptive Alt Text -->
                     <p id="editorImagePlaceholder" class="text-gray-400 text-lg">No image uploaded</p>
                 </div>
             </div>
@@ -526,12 +535,12 @@
             </div>
 
             <div id="editorEditedImageResultContainer" class="mt-10 animate-fade-in-up hidden">
-                <h2 class="text-2xl font-bold text-slate-100 mb-5">Edited Image:</h2>
+                <h2 class="text-2xl font-bold text-slate-100 mb-5">Edited Image:</h2> <!-- SEO: H2 for the edited image result -->
                 <div class="relative w-full h-auto rounded-xl shadow-xl border-2 border-blue-400 flex items-center justify-center bg-slate-800 p-4 min-h-[200px] overflow-hidden">
                     <img
                         id="editorEditedImage"
                         src=""
-                        alt=""
+                        alt="AI-edited image based on user prompt" <!-- SEO: Descriptive Alt Text -->
                         class="max-w-full h-auto object-contain rounded-lg shadow-md"
                     >
                 </div>
@@ -553,9 +562,9 @@
             </div>
         </div>
 
-        <!-- New Gallery Section -->
+        <!-- Gallery Section -->
         <div id="gallerySection" class="bg-slate-900 bg-opacity-30 backdrop-filter backdrop-blur-lg p-8 rounded-3xl shadow-deep-blue w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl text-center border border-blue-700 border-opacity-30 mx-auto my-8 transform transition-all duration-700 hover:scale-[1.01] hover:shadow-aura-glow card-with-animated-shadow hidden">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6"> <!-- SEO: This H1 should ideally be H2 if Home is the primary page -->
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400">
                     Your Image Gallery
                 </span>
@@ -605,7 +614,8 @@
         </p>
     </footer>
 
-    <script>
+    <!-- Main Application Script -->
+    <script type="module">
         // --- Global API Key ---
          // Please don't steal this.Because it is free tier API KEY.
         // You can also get one for free in Google AI studio.
@@ -613,13 +623,13 @@
         // don't post about this on social media.please!
         // mahidhartatipakala@gmail.com
         // I can't afford backend.please!
-        const API_KEY = "AIzaSyBl5fGiL7eb8zvrZexCdO1oPVwtTQVm8L8"; // Your provided API Key
+        const API_KEY = "AIzaSyDdS6Djy4akybiUahN29seSf56jPNl-I-4"; // Your provided API Key
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${API_KEY}`;
 
         // --- Local Storage Key ---
-        const GALLERY_STORAGE_KEY = 'imageProGalleryImages'; // Changed to store multiple images
+        const GALLERY_STORAGE_KEY = 'imageProGalleryImages';
 
-        // --- Common Utility Functions ---
+        // --- Common Utility Functions (displayError, hideError, downloadImage) ---
         function displayError(message, container) {
             if (container) {
                 container.textContent = message;
@@ -633,309 +643,6 @@
                 container.classList.remove('opacity-100');
                 container.classList.add('hidden');
                 container.textContent = '';
-            }
-        }
-
-        /**
-         * Stores an image and its prompt in local storage as part of a gallery array.
-         * @param {string} imageDataUrl - The data URL of the image.
-         * @param {string} mimeType - The MIME type of the image.
-         * @param {string} promptText - The prompt used to generate/edit the image.
-         */
-        function storeImageInGallery(imageDataUrl, mimeType, promptText) {
-            try {
-                const existingImages = retrieveGalleryImages();
-                const newImage = {
-                    id: Date.now().toString(), // Unique ID for each image
-                    data: imageDataUrl,
-                    mimeType: mimeType,
-                    prompt: promptText,
-                    timestamp: Date.now()
-                };
-                existingImages.push(newImage);
-                localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(existingImages));
-                console.log('Image stored in gallery local storage.');
-            } catch (e) {
-                console.error('Failed to store image in local storage:', e);
-            }
-        }
-
-        /**
-         * Retrieves all stored images from local storage.
-         * @returns {Array<object>} An array of stored image data.
-         */
-        function retrieveGalleryImages() {
-            try {
-                const storedData = localStorage.getItem(GALLERY_STORAGE_KEY);
-                return storedData ? JSON.parse(storedData) : [];
-            } catch (e) {
-                console.error('Failed to retrieve images from local storage:', e);
-                return [];
-            }
-        }
-
-        /**
-         * Deletes a specific image from the gallery based on its ID.
-         * @param {string} imageId - The ID of the image to delete.
-         */
-        function deleteImageFromGallery(imageId) {
-            let existingImages = retrieveGalleryImages();
-            const updatedImages = existingImages.filter(img => img.id !== imageId);
-            localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(updatedImages));
-            console.log(`Image with ID ${imageId} deleted from gallery.`);
-            renderGallery(); // Re-render the gallery after deletion
-        }
-
-        /**
-         * Clears all images from the gallery.
-         */
-        function clearGallery() {
-            // Replaced alert with a custom confirmation dialog (simple for now)
-            const confirmClear = document.createElement('div');
-            confirmClear.className = 'fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[2000]';
-            confirmClear.innerHTML = `
-                <div class="bg-slate-800 p-8 rounded-lg shadow-xl text-center border border-slate-700 max-w-sm">
-                    <p class="text-white text-lg mb-6">Are you sure you want to clear all images from your gallery? This cannot be undone.</p>
-                    <div class="flex justify-center space-x-4">
-                        <button id="confirmClearYes" class="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700">Yes, Clear All</button>
-                        <button id="confirmClearNo" class="px-6 py-2 rounded-lg bg-gray-600 text-white font-semibold hover:bg-gray-700">No, Cancel</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(confirmClear);
-
-            document.getElementById('confirmClearYes').onclick = () => {
-                localStorage.removeItem(GALLERY_STORAGE_KEY);
-                console.log('All images cleared from gallery.');
-                renderGallery();
-                document.body.removeChild(confirmClear);
-            };
-
-            document.getElementById('confirmClearNo').onclick = () => {
-                document.body.removeChild(confirmClear);
-            };
-        }
-
-
-        // --- Navigation Logic ---
-        const homeSection = document.getElementById('homeSection');
-        const generatorSection = document.getElementById('generatorSection');
-        const editorSection = document.getElementById('editorSection');
-        const gallerySection = document.getElementById('gallerySection'); // New gallery section
-
-        const menuToggleBtn = document.getElementById('menuToggleBtn'); // Hamburger icon button
-        const navMenu = document.getElementById('navMenu'); // The dropdown menu container
-
-        const showHomeBtn = document.getElementById('showHomeBtn');
-        const showGeneratorBtn = document.getElementById('showGeneratorBtn');
-        const showEditorBtn = document.getElementById('showEditorBtn');
-        const showGalleryBtn = document.getElementById('showGalleryBtn'); // New gallery button
-
-        // Function to toggle the navigation menu visibility
-        function toggleMenu() {
-            navMenu.classList.toggle('show-menu'); // Use 'show-menu' class for animation
-            if (!navMenu.classList.contains('show-menu')) {
-                // If hiding, add 'hidden' after transition
-                navMenu.addEventListener('transitionend', function handler() {
-                    navMenu.classList.add('hidden');
-                    navMenu.removeEventListener('transitionend', handler);
-                });
-            } else {
-                navMenu.classList.remove('hidden'); // Remove hidden immediately to start transition
-            }
-        }
-
-        // Function to close the navigation menu
-        function closeMenu() {
-            if (navMenu.classList.contains('show-menu')) {
-                navMenu.classList.remove('show-menu');
-                navMenu.addEventListener('transitionend', function handler() {
-                    navMenu.classList.add('hidden');
-                    navMenu.removeEventListener('transitionend', handler);
-                });
-            }
-        }
-
-        /**
-         * Shows a specific section and optionally pre-fills content.
-         * @param {string} sectionId - The ID of the section to show ('home', 'generator', 'editor', 'gallery').
-         * @param {object} [data] - Optional data to pre-fill inputs.
-         * @param {string} [data.prompt] - A prompt string for generator/editor.
-         * @param {string} [data.image] - A data URL for the editor image preview.
-         */
-        function showSection(sectionId, data = {}) {
-            // Hide all sections first
-            homeSection.classList.add('hidden');
-            generatorSection.classList.add('hidden');
-            editorSection.classList.add('hidden');
-            gallerySection.classList.add('hidden'); // Hide gallery section too
-
-            // Reset all menu button styles
-            const allMenuButtons = [showHomeBtn, showGeneratorBtn, showEditorBtn, showGalleryBtn];
-            allMenuButtons.forEach(btn => {
-                btn.classList.remove('active'); // Remove active class
-            });
-
-            // Show the selected section and update button style
-            if (sectionId === 'home') {
-                homeSection.classList.remove('hidden');
-                showHomeBtn.classList.add('active'); // Add active class
-            } else if (sectionId === 'generator') {
-                generatorSection.classList.remove('hidden');
-                showGeneratorBtn.classList.add('active'); // Add active class
-                if (data.prompt) {
-                    generatorPromptInput.value = data.prompt;
-                }
-                // Hide previous results when navigating to generator
-                generatedImageResultContainer.classList.add('hidden');
-            } else if (sectionId === 'editor') {
-                editorSection.classList.remove('hidden');
-                showEditorBtn.classList.add('active'); // Add active class
-                if (data.prompt) {
-                    editorPromptInputText.value = data.prompt;
-                }
-                if (data.image) {
-                    // Simulate file upload for the example image
-                    // This is a simplified approach, a real file input would need a DataTransfer object
-                    editorImagePreview.src = data.image;
-                    editorImagePreview.classList.remove('hidden');
-                    editorImagePlaceholder.classList.add('hidden');
-                    editorFileNameDisplay.textContent = 'example_image.png'; // Mock filename
-                    editorFileNameDisplay.classList.remove('text-gray-400');
-                    editorFileNameDisplay.classList.add('text-gray-800');
-                    editorUploadedImageBase64 = data.image;
-                    editorUploadedImageMimeType = 'image/png'; // Assume png for example
-                } else {
-                    // Clear editor inputs if no example image is provided
-                    editorImagePreview.src = '#';
-                    editorImagePreview.classList.add('hidden');
-                    editorImagePlaceholder.classList.remove('hidden');
-                    editorFileNameDisplay.textContent = 'No file chosen';
-                    editorFileNameDisplay.classList.remove('text-gray-800');
-                    editorFileNameDisplay.classList.add('text-gray-400');
-                    editorUploadedImageBase64 = null;
-                    editorUploadedImageMimeType = null;
-                }
-                // Hide previous results when navigating to editor
-                editorEditedImageResultContainer.classList.add('hidden');
-            } else if (sectionId === 'gallery') { // Handle gallery section
-                gallerySection.classList.remove('hidden');
-                showGalleryBtn.classList.add('active'); // Add active class
-                renderGallery(); // Render gallery images when shown
-            }
-            closeMenu(); // Close menu after selection
-        }
-
-        // Event Listeners for new menu system
-        menuToggleBtn.addEventListener('click', toggleMenu);
-        showHomeBtn.addEventListener('click', () => showSection('home'));
-        showGeneratorBtn.addEventListener('click', () => showSection('generator'));
-        showEditorBtn.addEventListener('click', () => showSection('editor'));
-        showGalleryBtn.addEventListener('click', () => showSection('gallery')); // Event listener for gallery button
-
-        // Close menu if clicked outside
-        document.addEventListener('click', (event) => {
-            if (!navMenu.contains(event.target) && !menuToggleBtn.contains(event.target) && navMenu.classList.contains('show-menu')) {
-                closeMenu();
-            }
-        });
-
-        // --- Image Generator Logic ---
-        const generatorPromptInput = document.getElementById('generatorPromptInput');
-        const generateImageButton = document.getElementById('generateImageButton');
-        const generateButtonContent = document.getElementById('generateButtonContent');
-        const generatorErrorContainer = document.getElementById('generatorErrorContainer');
-        const generatedImageResultContainer = document.getElementById('generatedImageResultContainer');
-        const generatedImage = document.getElementById('generatedImage');
-        const downloadGeneratedButton = document.getElementById('downloadGeneratedButton');
-        const generatorDownloadFormat = document.getElementById('generatorDownloadFormat'); // New select element
-
-        function setGeneratorLoadingState(isLoading) {
-            if (isLoading) {
-                generateImageButton.disabled = true;
-                generateImageButton.classList.add('bg-gray-400', 'cursor-not-allowed');
-                generateImageButton.classList.remove('btn-gradient');
-                generateButtonContent.innerHTML = `
-                    <svg class="animate-spin-custom h-7 w-7 mr-3 text-white" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.000 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Generating...</span>
-                `;
-            } else {
-                generateImageButton.disabled = false;
-                generateImageButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                generateImageButton.classList.add('btn-gradient');
-                generateButtonContent.innerHTML = `<span>Generate Image</span>`;
-            }
-        }
-
-        async function generateImage() {
-            setGeneratorLoadingState(true);
-            hideError(generatorErrorContainer);
-            generatedImageResultContainer.classList.add('hidden'); // Ensure hidden on new generation
-            generatedImage.classList.remove('image-loaded-glow');
-
-            const prompt = generatorPromptInput.value.trim();
-
-            if (!prompt) {
-                displayError('Please enter a prompt to generate an image.', generatorErrorContainer);
-                setGeneratorLoadingState(false);
-                return;
-            }
-
-            try {
-                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-                const payload = {
-                    contents: chatHistory,
-                    generationConfig: {
-                        responseModalities: ["TEXT", "IMAGE"]
-                    }
-                };
-
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`API error: ${errorData.error.message || response.statusText}`);
-                }
-
-                const result = await response.json();
-
-                let imageFound = false;
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts) {
-
-                    for (const part of result.candidates[0].content.parts) {
-                        if (part.inlineData && part.inlineData.mimeType.startsWith('image/') && part.inlineData.data) {
-                            const imageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
-                            generatedImage.src = imageUrl;
-                            generatedImageResultContainer.classList.remove('hidden'); // Show on success
-
-                            generatedImage.onload = () => {
-                                generatedImage.classList.add('image-loaded-glow');
-                            };
-                            imageFound = true;
-                            // Store the generated image in local storage
-                            storeImageInGallery(imageUrl, part.inlineData.mimeType, prompt); // Use new store function
-                            break;
-                        }
-                    }
-                }
-
-                if (!imageFound) {
-                    displayError('No image data received in the API response. Please try a different prompt.', generatorErrorContainer);
-                }
-
-            } catch (err) {
-                displayError(`Error generating image: ${err.message}`, generatorErrorContainer);
-                console.error('Generation error:', err);
-            } finally {
-                setGeneratorLoadingState(false);
             }
         }
 
@@ -974,16 +681,34 @@
             img.src = imgSrc;
         }
 
-        function downloadGeneratedImage() {
-            downloadImage(generatedImage.src, generatorDownloadFormat.value, 'generated_image');
-        }
+        // --- DOM Elements ---
+        const homeSection = document.getElementById('homeSection');
+        const generatorSection = document.getElementById('generatorSection');
+        const editorSection = document.getElementById('editorSection');
+        const gallerySection = document.getElementById('gallerySection');
 
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('navMenu');
 
-        // Generator Event Listeners
-        generateImageButton.addEventListener('click', generateImage);
-        downloadGeneratedButton.addEventListener('click', downloadGeneratedImage);
+        const showHomeBtn = document.getElementById('showHomeBtn');
+        const showGeneratorBtn = document.getElementById('showGeneratorBtn');
+        const showEditorBtn = document.getElementById('showEditorBtn');
+        const showGalleryBtn = document.getElementById('showGalleryBtn');
 
-        // --- Image Editor Logic ---
+        // Buttons for home section navigation
+        const homeToGeneratorBtn = document.getElementById('homeToGeneratorBtn');
+        const homeToEditorBtn = document.getElementById('homeToEditorBtn');
+        const homeToGalleryBtn = document.getElementById('homeToGalleryBtn');
+
+        const generatorPromptInput = document.getElementById('generatorPromptInput');
+        const generateImageButton = document.getElementById('generateImageButton');
+        const generateButtonContent = document.getElementById('generateButtonContent');
+        const generatorErrorContainer = document.getElementById('generatorErrorContainer');
+        const generatedImageResultContainer = document.getElementById('generatedImageResultContainer');
+        const generatedImage = document.getElementById('generatedImage');
+        const downloadGeneratedButton = document.getElementById('downloadGeneratedButton');
+        const generatorDownloadFormat = document.getElementById('generatorDownloadFormat');
+
         const editorImageUpload = document.getElementById('editorImageUpload');
         const editorCustomFileUploadButton = document.getElementById('editorCustomFileUploadButton');
         const editorFileNameDisplay = document.getElementById('editorFileNameDisplay');
@@ -997,9 +722,215 @@
         const editorEditedImageResultContainer = document.getElementById('editorEditedImageResultContainer');
         const editorEditedImage = document.getElementById('editorEditedImage');
         const downloadEditorEditedButton = document.getElementById('downloadEditorEditedButton');
-        const editorDownloadFormat = document.getElementById('editorDownloadFormat'); // New select element
-        const editorSelectFromGalleryButton = document.getElementById('editorSelectFromGalleryButton'); // New: Select from Gallery Button
+        const editorDownloadFormat = document.getElementById('editorDownloadFormat');
+        const editorSelectFromGalleryButton = document.getElementById('editorSelectFromGalleryButton');
 
+        const galleryGrid = document.getElementById('galleryGrid');
+        const clearGalleryButton = document.getElementById('clearGalleryButton');
+        const noImagesMessage = document.getElementById('noImagesMessage');
+
+        const gallerySelectionModal = document.getElementById('gallerySelectionModal');
+        const galleryModalGrid = document.getElementById('galleryModalGrid');
+        const closeGalleryModalBtn = document.getElementById('closeGalleryModalBtn');
+        const noImagesModalMessage = document.getElementById('noImagesModalMessage');
+
+        // --- Navigation Logic ---
+        function toggleMenu() {
+            navMenu.classList.toggle('show-menu');
+            if (!navMenu.classList.contains('show-menu')) {
+                navMenu.addEventListener('transitionend', function handler() {
+                    navMenu.classList.add('hidden');
+                    navMenu.removeEventListener('transitionend', handler);
+                });
+            } else {
+                navMenu.classList.remove('hidden');
+            }
+        }
+
+        function closeMenu() {
+            if (navMenu.classList.contains('show-menu')) {
+                navMenu.classList.remove('show-menu');
+                navMenu.addEventListener('transitionend', function handler() {
+                    navMenu.classList.add('hidden');
+                    navMenu.removeEventListener('transitionend', handler);
+                });
+            }
+        }
+
+        function showSection(sectionId, data = {}) {
+            homeSection.classList.add('hidden');
+            generatorSection.classList.add('hidden');
+            editorSection.classList.add('hidden');
+            gallerySection.classList.add('hidden');
+
+            const allMenuButtons = [showHomeBtn, showGeneratorBtn, showEditorBtn, showGalleryBtn];
+            allMenuButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (sectionId === 'home') {
+                homeSection.classList.remove('hidden');
+                showHomeBtn.classList.add('active');
+            } else if (sectionId === 'generator') {
+                generatorSection.classList.remove('hidden');
+                showGeneratorBtn.classList.add('active');
+                if (data.prompt) {
+                    generatorPromptInput.value = data.prompt;
+                }
+                generatedImageResultContainer.classList.add('hidden');
+            } else if (sectionId === 'editor') {
+                editorSection.classList.remove('hidden');
+                showEditorBtn.classList.add('active');
+                if (data.image) {
+                    editorImagePreview.src = data.image;
+                    editorImagePreview.classList.remove('hidden');
+                    editorImagePlaceholder.classList.add('hidden');
+                    editorFileNameDisplay.textContent = 'example_image.png';
+                    editorFileNameDisplay.classList.remove('text-gray-400');
+                    editorFileNameDisplay.classList.add('text-gray-800');
+                    editorUploadedImageBase64 = data.image;
+                    editorUploadedImageMimeType = 'image/png';
+                } else {
+                    editorImagePreview.src = '#';
+                    editorImagePreview.classList.add('hidden');
+                    editorImagePlaceholder.classList.remove('hidden');
+                    editorFileNameDisplay.textContent = 'No file chosen';
+                    editorFileNameDisplay.classList.remove('text-gray-800');
+                    editorFileNameDisplay.classList.add('text-gray-400');
+                    editorUploadedImageBase64 = null;
+                    editorUploadedImageMimeType = null;
+                }
+                editorEditedImageResultContainer.classList.add('hidden');
+            } else if (sectionId === 'gallery') {
+                gallerySection.classList.remove('hidden');
+                showGalleryBtn.classList.add('active');
+                renderGallery();
+            }
+            closeMenu();
+        }
+
+        // Event listeners for navigation buttons
+        menuToggleBtn.addEventListener('click', toggleMenu);
+        showHomeBtn.addEventListener('click', () => showSection('home'));
+        showGeneratorBtn.addEventListener('click', () => showSection('generator'));
+        showEditorBtn.addEventListener('click', () => showSection('editor'));
+        showGalleryBtn.addEventListener('click', () => showSection('gallery'));
+
+        // Event listeners for home section buttons
+        homeToGeneratorBtn.addEventListener('click', () => showSection('generator'));
+        homeToEditorBtn.addEventListener('click', () => showSection('editor'));
+        homeToGalleryBtn.addEventListener('click', () => showSection('gallery'));
+
+
+        document.addEventListener('click', (event) => {
+            if (!navMenu.contains(event.target) && !menuToggleBtn.contains(event.target) && navMenu.classList.contains('show-menu')) {
+                closeMenu();
+            }
+        });
+
+        // --- Image Generator Logic ---
+        function setGeneratorLoadingState(isLoading) {
+            if (isLoading) {
+                generateImageButton.disabled = true;
+                generateImageButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                generateImageButton.classList.remove('btn-gradient');
+                generateButtonContent.innerHTML = `
+                    <svg class="animate-spin-custom h-7 w-7 mr-3 text-white" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.000 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Generating...</span>
+                `;
+            } else {
+                generateImageButton.disabled = false;
+                generateImageButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                generateImageButton.classList.add('btn-gradient');
+                generateButtonContent.innerHTML = `<span>Generate Image</span>`;
+            }
+        }
+
+        async function generateImage() {
+            setGeneratorLoadingState(true);
+            hideError(generatorErrorContainer);
+            generatedImageResultContainer.classList.add('hidden');
+            generatedImage.classList.remove('image-loaded-glow');
+
+            const prompt = generatorPromptInput.value.trim();
+            // Removed negativePrompt and aspectRatio logic
+
+            if (!prompt) {
+                displayError('Please enter a prompt to generate an image.', generatorErrorContainer);
+                setGeneratorLoadingState(false);
+                return;
+            }
+
+            // The prompt is now just the direct input from the user
+            const finalPrompt = prompt;
+
+            try {
+                const chatHistory = [{ role: "user", parts: [{ text: finalPrompt }] }];
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseModalities: ["TEXT", "IMAGE"]
+                    }
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API error: ${errorData.error.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                let imageFound = false;
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts) {
+
+                    for (const part of result.candidates[0].content.parts) {
+                        if (part.inlineData && part.inlineData.mimeType.startsWith('image/') && part.inlineData.data) {
+                            const imageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+                            generatedImage.src = imageUrl;
+                            generatedImageResultContainer.classList.remove('hidden');
+
+                            generatedImage.onload = () => {
+                                generatedImage.classList.add('image-loaded-glow');
+                            };
+                            imageFound = true;
+                            storeImageInGallery(imageUrl, part.inlineData.mimeType, finalPrompt); // Store final prompt
+                            break;
+                        }
+                    }
+                }
+
+                if (!imageFound) {
+                    displayError('No image data received in the API response. Please try a different prompt.', generatorErrorContainer);
+                }
+
+            } catch (err) {
+                displayError(`Error generating image: ${err.message}`, generatorErrorContainer);
+                console.error('Generation error:', err);
+            } finally {
+                setGeneratorLoadingState(false);
+            }
+        }
+
+        function downloadGeneratedImage() {
+            downloadImage(generatedImage.src, generatorDownloadFormat.value, 'generated_image');
+        }
+
+
+        // Generator Event Listeners
+        generateImageButton.addEventListener('click', generateImage);
+        downloadGeneratedButton.addEventListener('click', downloadGeneratedImage);
+
+        // --- Image Editor Logic ---
         let editorUploadedImageBase64 = null;
         let editorUploadedImageMimeType = null;
 
@@ -1026,7 +957,7 @@
         async function editImage() {
             setEditorLoadingState(true);
             hideError(editorErrorContainer);
-            editorEditedImageResultContainer.classList.add('hidden'); // Ensure hidden on new edit
+            editorEditedImageResultContainer.classList.add('hidden');
 
             const prompt = editorPromptInputText.value.trim();
 
@@ -1086,14 +1017,13 @@
                         if (part.inlineData && part.inlineData.mimeType.startsWith('image/') && part.inlineData.data) {
                             const editedImageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
                             editorEditedImage.src = editedImageUrl;
-                            editorEditedImageResultContainer.classList.remove('hidden'); // Show on success
+                            editorEditedImageResultContainer.classList.remove('hidden');
 
                             editorEditedImage.onload = () => {
                                 editorEditedImage.classList.add('image-loaded-glow');
                             };
                             imageFound = true;
-                            // Store the edited image in local storage
-                            storeImageInGallery(editedImageUrl, part.inlineData.mimeType, prompt); // Use new store function
+                            storeImageInGallery(editedImageUrl, part.inlineData.mimeType, prompt);
                             break;
                         }
                         }
@@ -1131,9 +1061,8 @@
                     editorImagePreview.classList.remove('hidden');
                     editorImagePlaceholder.classList.add('hidden');
                     editorFileNameDisplay.textContent = file.name;
-                    // Changed text color for dark theme
-                    editorFileNameDisplay.classList.remove('text-slate-400'); // Remove old light color class
-                    editorFileNameDisplay.classList.add('text-slate-200'); // Add new dark color class
+                    editorFileNameDisplay.classList.remove('text-slate-400');
+                    editorFileNameDisplay.classList.add('text-slate-200');
 
                     hideError(editorErrorContainer);
                 };
@@ -1145,9 +1074,8 @@
                     editorImagePreview.classList.add('hidden');
                     editorImagePlaceholder.classList.remove('hidden');
                     editorFileNameDisplay.textContent = 'No file chosen';
-                    // Changed text color for dark theme
-                    editorFileNameDisplay.classList.remove('text-slate-200'); // Remove new dark color class
-                    editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
+                    editorFileNameDisplay.classList.remove('text-slate-200');
+                    editorFileNameDisplay.classList.add('text-slate-400');
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -1157,9 +1085,8 @@
                 editorImagePreview.classList.add('hidden');
                 editorImagePlaceholder.classList.remove('hidden');
                 editorFileNameDisplay.textContent = 'No file chosen';
-                // Changed text color for dark theme
-                editorFileNameDisplay.classList.remove('text-slate-200'); // Remove new dark color class
-                    editorFileNameDisplay.classList.add('text-slate-400'); // Add old light color class
+                editorFileNameDisplay.classList.remove('text-slate-200');
+                editorFileNameDisplay.classList.add('text-slate-400');
             }
         }
 
@@ -1173,15 +1100,89 @@
         downloadEditorEditedButton.addEventListener('click', downloadEditorEditedImage);
 
 
-        // --- Gallery Logic ---
-        const galleryGrid = document.getElementById('galleryGrid');
-        const clearGalleryButton = document.getElementById('clearGalleryButton');
-        const noImagesMessage = document.getElementById('noImagesMessage');
+        // --- Gallery Management (Local Storage Only) ---
+
+        /**
+         * Stores an image and its prompt in local storage.
+         * @param {string} imageDataUrl - The data URL of the image.
+         * @param {string} mimeType - The MIME type of the image.
+         * @param {string} promptText - The prompt used to generate/edit the image.
+         */
+        function storeImageInGallery(imageDataUrl, mimeType, promptText) {
+            const newImage = {
+                id: Date.now().toString(), // Unique ID for each image
+                data: imageDataUrl,
+                mimeType: mimeType,
+                prompt: promptText,
+                timestamp: Date.now()
+            };
+
+            let localImages = retrieveGalleryImages();
+            localImages.push(newImage);
+            localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(localImages));
+            console.log('Image stored in local storage.');
+            renderGallery(); // Re-render to show newly added image
+        }
+
+        /**
+         * Retrieves all stored images from local storage.
+         * @returns {Array<object>} An array of stored image data.
+         */
+        function retrieveGalleryImages() {
+            try {
+                const storedData = localStorage.getItem(GALLERY_STORAGE_KEY);
+                return storedData ? JSON.parse(storedData) : [];
+            } catch (e) {
+                console.error('Failed to retrieve images from local storage:', e);
+                return [];
+            }
+        }
+
+        /**
+         * Deletes a specific image from the gallery based on its ID.
+         * @param {string} imageDataUrl - The data URL of the image to delete (used as key).
+         */
+        function deleteImageFromGallery(imageDataUrl) {
+            let localImages = retrieveGalleryImages();
+            const updatedLocalImages = localImages.filter(img => img.data !== imageDataUrl);
+            localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(updatedLocalImages));
+            console.log(`Image deleted from local storage.`);
+            renderGallery(); // Re-render the gallery after deletion
+        }
+
+        /**
+         * Clears all images from the gallery (local storage only).
+         */
+        async function clearGallery() {
+            const confirmClear = document.createElement('div');
+            confirmClear.className = 'fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[2000]';
+            confirmClear.innerHTML = `
+                <div class="bg-slate-800 p-8 rounded-lg shadow-xl text-center border border-slate-700 max-w-sm">
+                    <p class="text-white text-lg mb-6">Are you sure you want to clear all images from your gallery? This cannot be undone.</p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="confirmClearYes" class="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700">Yes, Clear All</button>
+                        <button id="confirmClearNo" class="px-6 py-2 rounded-lg bg-gray-600 text-white font-semibold hover:bg-gray-700">No, Cancel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmClear);
+
+            document.getElementById('confirmClearYes').onclick = () => {
+                localStorage.removeItem(GALLERY_STORAGE_KEY);
+                console.log('All images cleared from local storage.');
+                renderGallery();
+                document.body.removeChild(confirmClear);
+            };
+
+            document.getElementById('confirmClearNo').onclick = () => {
+                document.body.removeChild(confirmClear);
+            };
+        }
 
         /**
          * Renders all images currently stored in the gallery.
          */
-        function renderGallery() {
+        async function renderGallery() {
             galleryGrid.innerHTML = ''; // Clear existing images
             const images = retrieveGalleryImages();
 
@@ -1195,11 +1196,11 @@
                 images.forEach(imgData => {
                     const imgContainer = document.createElement('div');
                     imgContainer.className = 'relative bg-slate-800 bg-opacity-70 rounded-xl shadow-lg p-4 flex flex-col items-center justify-between space-y-3 border border-blue-700 border-opacity-50';
-                    imgContainer.style.animation = 'fadeIn 0.6s ease-out forwards'; // Apply fade-in animation
+                    imgContainer.style.animation = 'fadeIn 0.6s ease-out forwards';
 
                     const imgElement = document.createElement('img');
                     imgElement.src = imgData.data;
-                    imgElement.alt = imgData.prompt; // Use prompt as alt text for accessibility
+                    imgElement.alt = imgData.prompt;
                     imgElement.className = 'max-w-full h-48 object-contain rounded-lg shadow-md mb-3';
 
                     const promptText = document.createElement('p');
@@ -1217,14 +1218,14 @@
                     const deleteButton = document.createElement('button');
                     deleteButton.className = 'px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors duration-200 text-sm font-semibold';
                     deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = () => deleteImageFromGallery(imgData.id);
-
+                    deleteButton.onclick = () => deleteImageFromGallery(imgData.data);
+                    
                     buttonContainer.appendChild(downloadButton);
                     buttonContainer.appendChild(deleteButton);
 
                     imgContainer.appendChild(imgElement);
                     imgContainer.appendChild(promptText);
-                    imgContainer.appendChild(buttonContainer); // Append the button container
+                    imgContainer.appendChild(buttonContainer);
                     galleryGrid.appendChild(imgContainer);
                 });
             }
@@ -1235,14 +1236,9 @@
 
 
         // --- Gallery Selection Modal Logic ---
-        const gallerySelectionModal = document.getElementById('gallerySelectionModal');
-        const galleryModalGrid = document.getElementById('galleryModalGrid');
-        const closeGalleryModalBtn = document.getElementById('closeGalleryModalBtn');
-        const noImagesModalMessage = document.getElementById('noImagesModalMessage');
-
-        function openGallerySelectionModal() {
+        async function openGallerySelectionModal() {
             console.log('Opening gallery selection modal.');
-            galleryModalGrid.innerHTML = ''; // Clear previous images
+            galleryModalGrid.innerHTML = '';
             const images = retrieveGalleryImages();
 
             if (images.length === 0) {
@@ -1250,7 +1246,6 @@
                 console.log('No images in gallery to display in modal.');
             } else {
                 noImagesModalMessage.classList.add('hidden');
-                // Sort images by timestamp in descending order (newest first)
                 images.sort((a, b) => b.timestamp - a.timestamp);
 
                 images.forEach(imgData => {
@@ -1287,12 +1282,12 @@
             editorImagePreview.src = editorUploadedImageBase64;
             editorImagePreview.classList.remove('hidden');
             editorImagePlaceholder.classList.add('hidden');
-            editorFileNameDisplay.textContent = `Selected from Gallery: ${promptText.substring(0, 20)}...`; // Show a snippet of prompt as filename
+            editorFileNameDisplay.textContent = `Selected from Gallery: ${promptText.substring(0, 20)}...`;
             editorFileNameDisplay.classList.remove('text-slate-400');
-            editorFileNameDisplay.classList.add('text-slate-200'); // Changed text color for dark theme
+            editorFileNameDisplay.classList.add('text-slate-200');
 
             hideError(editorErrorContainer);
-            closeGallerySelectionModal(); // Close modal after selection
+            closeGallerySelectionModal();
         }
 
         // Event Listeners for Gallery Selection Modal
@@ -1302,10 +1297,12 @@
 
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Show Home section by default
             showSection('home');
-            // Initial render of gallery (though it's hidden, it sets up the state)
-            renderGallery();
+            // Remove any user status display now that Firebase is completely removed
+            const userStatusElement = document.getElementById('userStatus');
+            if (userStatusElement) {
+                userStatusElement.remove();
+            }
         });
     </script>
 </body>
